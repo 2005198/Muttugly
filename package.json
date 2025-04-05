@@ -1,0 +1,22 @@
+{
+  "name": "nodejs",
+  "version": "1.0.0",
+  "description": "Project CA1",
+  "homepage": "https://github.com/2005198/Muttugly#readme",
+  "bugs": {
+    "url": "https://github.com/2005198/Muttugly/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/2005198/Muttugly.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "script.js",
+  "scripts": {
+    "test": "node start ../userbackend/user.js"},
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
