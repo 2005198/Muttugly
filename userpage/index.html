@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Simple Shop</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f8f8f8;
+      margin: 0;
+      padding: 2rem;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .product-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      justify-content: center;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      width: 220px;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    .card img {
+      width: 100%;
+      height: 150px;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+
+    .card h3 {
+      margin: 1rem 0 0.5rem;
+    }
+
+    .card p {
+      margin: 0.5rem 0;
+    }
+
+    .card button {
+      padding: 0.5rem 1rem;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .card button:hover {
+      background: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Simple Product Shop</h1>
+  <div class="product-grid" id="productGrid"></div>
+
+  <script>
+    const products = [
+      {
+        id: 1,
+        name: "T-Shirt BY ABDULLAH",
+        price: "$20",
+        image: "./"
+      },
+      {
+        id: 2,
+        name: "DOG LEESH BY MUKARRAM ",
+        price: "$50",
+        image: "./images/mukkaram.png.jpeg"
+      },
+      {
+        id: 3,
+        name: "DOG BISCUITS PACK BY CHACHU",
+        price: "$30",
+        image: "https://via.placeholder.com/200x150.png?text=Backpack"
+      }
+    ];
+
+    const productGrid = document.getElementById("productGrid");
+
+    products.forEach(product => {
+      const card = document.createElement("div");
+      card.className = "card";
+
+      card.innerHTML = `
+        <img src="${product.image}" alt="${product.name}" />
+        <h3>${product.name}</h3>
+        <p>${product.price}</p>
+        <button onclick="addToCart(${product.id})">Add to Cart</button>
+      `;
+
+      productGrid.appendChild(card);
+    });
+
+    function addToCart(productId) {
+      const product = products.find(p => p.id === productId);
+      fetch("/post",{
+        method: "Post",
+        headers:{
+          "Content-type":"application/json",
+        },
+        body:JSON.stringify({
+         cart_id: product.id,
+         cart_name: product.name,
+         cart_price: product.price,
+         cart_qty:1}),
+
+      })
+      
+    }
+  </script>
+</body>
+</html>
