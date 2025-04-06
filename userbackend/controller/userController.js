@@ -32,7 +32,8 @@ let userdetail=JSON.parse(fs.readFileSync('../userfile/userDetail.json','utf-8',
         res.status(200).json({
             status:200,
             message:"user created successfully",
-            user:{Email,password}
+            user:{Email,password},
+            cart:[]
         })
     }
     
@@ -67,7 +68,8 @@ export function authorzie(req,res,next){
        if(token){
         try{
         const decode=jwt.verify(token,SECRET);
-        console.log(decode.UserEmail)
+        console.log(decode.UserEmail);
+        req.UserEmail=decode.UserEmail; //sending to next middleware 
         next();
         }
         catch(err){

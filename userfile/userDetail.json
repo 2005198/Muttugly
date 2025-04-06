@@ -1,27 +1,64 @@
 [
-    
-    {
-        "Email": "user123@gmail.com",
-        "password": "1243432523"
-    },
-    {
-        "Email": "user13@gmail.com",
-        "password": "1243432523"
-    },
-    {
-        "Email": "helloworld@gmail.com",
-        "password": "1243432523"
-    },
-    {
-        "Email": "helloworld@gmail.com",
-        "password": "1243432523"
-    },
-    {
-        "Email": "mukkaram@gmail.com",
-        "password": "blablabla"
-    },
-    {
-        "Email": "muk@gmail.com",
-        "password": "ksafshjdflas"
-    }
+  {
+    "Email": "user123@gmail.com",
+    "password": "1243432523"
+  },
+  {
+    "Email": "user13@gmail.com",
+    "password": "1243432523"
+  },
+  {
+    "Email": "helloworld@gmail.com",
+    "password": "1243432523"
+  },
+  {
+    "Email": "helloworld@gmail.com",
+    "password": "1243432523"
+  },
+  {
+    "Email": "mukkaram@gmail.com",
+    "password": "blablabla"
+  },
+  {
+    "Email": "muk@gmail.com",
+    "password": "ksafshjdflas",
+    "cart": [
+      {
+        "id": 1,
+        "name": "T-Shirt BY ABDULLAH",
+        "price": "$20",
+        "qty": 3
+      },
+      {
+        "id": 2,
+        "name": "DOG LEESH BY MUKARRAM ",
+        "price": "$50",
+        "qty": 1
+      }
+    ]
+  },
+  {
+    "Email": "mukarram063@gmail.com",
+    "password": "blablabla",
+    "cart": [
+      {
+        "id": 1,
+        "name": "T-Shirt BY ABDULLAH",
+        "price": "$20",
+        "qty": 7
+      },
+      {
+        "id": 3,
+        "name": "DOG BISCUITS PACK BY CHACHU",
+        "price": "$30",
+        "qty": 2
+      },
+      {
+        "id": 2,
+        "name": "DOG LEESH BY MUKARRAM ",
+        "price": "$50",
+        "qty": 6
+      }
+    ]
+  }
 ]
