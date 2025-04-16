@@ -63,30 +63,71 @@
   </style>
 </head>
 <body>
+  
 
-  <h1>Simple Product Shop</h1>
+  <h1>Product Shop</h1>
   <div class="product-grid" id="productGrid"></div>
+<br>
+<br>
+  <div style="display:inline;">
+    <a href="./cart.html" style="float:left">SEE CART ITEM</a>
+    <a href="./userlogin.html" style="float:right;">LOGIN USER</a>
+  </div>
+  <navbar style="width: 100%; background-color:bisque; display: block;height: 90px; ">
+    <h1 style="align-items: center;justify-content:center;display: flex ; height: 100%;">MUTTUGLY</h1>
+  </navbar>
 
   <script>
     const products = [
       {
         id: 1,
-        name: "T-Shirt BY ABDULLAH",
+        name: "TOY_1",
         price: "$20",
-        image: "./"
+        image: "./images/Dog_toy_2.jpg"
       },
       {
         id: 2,
-        name: "DOG LEESH BY MUKARRAM ",
+        name: "Dog leesh",
         price: "$50",
         image: "./images/mukkaram.png.jpeg"
       },
       {
         id: 3,
-        name: "DOG BISCUITS PACK BY CHACHU",
+        name: "TOY_2",
         price: "$30",
-        image: "https://via.placeholder.com/200x150.png?text=Backpack"
-      }
+        image: "./images/Dog_toy_3.jpg"
+      },
+      {
+        id: 4,
+        name: "TOY_3",
+        price: "$30",
+        image: "./images/Dog_toy_4.jpg"
+      },
+      {
+        id: 5,
+        name: "Dog Cap",
+        price: "$30",
+        image: "./images/Dog_woolen_cap.webp"
+      },
+      {
+        id: 6,
+        name: "Hot Dog- Bed ",
+        price: "$30",
+        image: "./images/Dog_bed_1.jpg"
+      },
+      {
+        id: 7,
+        name: "Dog Halloween Costume",
+        price: "$30",
+        image: "./images/Dog_costume.webp"
+      },
+      {
+        id: 8,
+        name: "Dog Eye Mask",
+        price: "$30",
+        image: "./images/Dog_eye_mask.jpg"
+      },
+
     ];
 
     const productGrid = document.getElementById("productGrid");
@@ -105,8 +146,9 @@
       productGrid.appendChild(card);
     });
 
-    function addToCart(productId) {
-      const product = products.find(p => p.id === productId);
+    function addToCart(productid) {
+      const product = products.find(p => p.id === productid);
+      console.log(product)
       fetch("/post",{
         method: "Post",
         headers:{
@@ -119,6 +161,15 @@
          cart_qty:1}),
 
       })
+      .then(response=>{
+        if(response.status!==200){
+          alert("login first ");
+          window.location.href="./userlogin.html"
+        }
+      })
+      .catch(err=>{
+        console.error(err)
+        alert("login first")})
       
     }
   </script>

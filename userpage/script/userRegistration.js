@@ -5,7 +5,7 @@ function Func1(){
 let Email=document.getElementById("emailId").value;
 let password=document.getElementById("password").value;
 let confirmPassword=document.getElementById("confirmPassword").value;
-if(confirmPassword===password){
+if(confirmPassword===password && Email!==''){
 fetch('/user',{
     method:'POST',
     headers:{
@@ -16,10 +16,10 @@ fetch('/user',{
 
 
 })
-.then(data=>{console.log(data)})
+.then(()=>window.location.href="/userlogin.html")
 .catch(err=>{console.log(err)})
 }
 else{
-alert("password dont match !!!")
+alert("password dont match !!! || EMAIL NOT ENTERED ")
 }
 }

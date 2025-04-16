@@ -2,7 +2,7 @@ import express from 'express'
 import * as fs from 'node:fs'
 import jwt from 'jsonwebtoken';
 import { skip } from 'node:test';
-const SECRET="kadkfasdnjsdfsabfsMUKKARAM@69LOVER"
+const SECRET="kadkfasdnjsdfsabfsMUKKARAMkjlkjlk"
 
 let userdetail=JSON.parse(fs.readFileSync('../userfile/userDetail.json','utf-8',(err)=>{
     console.log(err);
@@ -25,7 +25,7 @@ let userdetail=JSON.parse(fs.readFileSync('../userfile/userDetail.json','utf-8',
 
     }
     else{
-        userdetail.push({Email,password});
+        userdetail.push({Email,password,cart:[]});
         fs.writeFile('../userfile/userDetail.json',JSON.stringify(userdetail,null,4),(err)=>{
             console.error(err);
         })
@@ -42,11 +42,14 @@ let userdetail=JSON.parse(fs.readFileSync('../userfile/userDetail.json','utf-8',
 
 
 /// checking user and creating token ....
-export function checkuser(req,res,next){
-    const {Email,password}=req.body;
+export async function checkuser(req,res,next){
+    let userdetail=await JSON.parse(fs.readFileSync('../userfile/userDetail.json','utf-8',(err)=>{
+        console.log(err);
+    }));
+    const {Email,password}=await req.body;
     for (const element of userdetail){
         if(element.Email===Email){
-            const token=jwt.sign({UserEmail:element.Email},SECRET,{expiresIn:"2h"});
+            const token=await jwt.sign({UserEmail:element.Email},SECRET,{expiresIn:"2h"});
             res.cookie("authorization",token,{
                 maxAge:"360000000" 
             })

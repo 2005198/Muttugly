@@ -1,77 +1,107 @@
-const products = [
-    { id: 1, name: "T-Shirt", price: 20, image: "https://via.placeholder.com/200x150.png?text=T-Shirt" },
-    { id: 2, name: "Sneakers", price: 50, image: "https://via.placeholder.com/200x150.png?text=Sneakers" },
-    { id: 3, name: "Backpack", price: 30, image: "https://via.placeholder.com/200x150.png?text=Backpack" }
-  ];
+document.addEventListener("DOMContentLoaded",()=>{
+  getitem()
+})
+
+
+//function to get items if logged in 
+async function getitem(){
+  const response = await fetch("/getitems",{
+    method:'Get'
+  })
+  if(!response.ok){
+    const div=document.getElementById("cart_items");
+    div.innerHTML="";
+    cartdiv=document.createElement('div')
+    cartdiv.innerHTML=`<div>
+      <h1 style="background-color:red;color:white;width:100%;display:flex;justify-content:center">USER LOGIN REQUIRED</h1>
+          <a href="./userlogin.html" style="float:right;">LOGIN USER</a>
+      
+      </div>
   
-  // Cart data
-  let cart = [];
-  
-  // Get the DOM elements for the product grid and cart
-  const productGrid = document.getElementById("productGrid");
-  const cartContainer = document.getElementById("cartContainer");
-  const cartItems = document.getElementById("cartItems");
-  const totalAmount = document.getElementById("totalAmount");
-  
-  // Render the products in the product grid
-  function renderProducts() {
-    products.forEach(product => {
-      const card = document.createElement("div");
-      card.className = "card";
-      card.innerHTML = `
-        <img src="${product.image}" alt="${product.name}" />
-        <h3>${product.name}</h3>
-        <p>$${product.price}</p>
-        <button onclick="addToCart(${product.id})">Add to Cart</button>
-      `;
-      productGrid.appendChild(card);
-    });
-  }
-  
-  // Add product to the cart
-  function addToCart(productId) {
-    const product = products.find(p => p.id === productId);
-    const existingProduct = cart.find(p => p.id === productId);
-  
-    if (existingProduct) {
-      existingProduct.quantity += 1;
-    } else {
-      cart.push({ ...product, quantity: 1 });
+      `
+      div.appendChild(cartdiv)
+      return ;
     }
   
-    renderCart();
+  let cart=await response.json('cart');
+  cart=cart['cart']
+  const div=document.getElementById("cart_items");
+  div.innerHTML="";
+  cart.forEach(element => {
+    cartdiv=document.createElement('div')
+    cartdiv.innerHTML=`<div class="container-father" style="display:inline;">
+    <h1 id="name" class="name" style="display:inline;">${element.name}</h1>
+    <h2 style="display:inline;margin-left:10px;color:red">QTY: ${element.qty}</h2><div style="margin-left:10px;display:inline" class="container"><button id="pls">+</button><input id="inp" type="text" value="${element.qty}"style="text-align:center;max-width:25px"><button id="min">-</button> <button onclick="func2(this)">UPDATE</button></div>
+    <h2 style="display:inline;margin-left:15px;color:red"> PRICE : ${element.price}</h2>
+    <div style="display:inline;"><button style="background-color:red" onclick="deleteItem(this)">DELETE X</button></div>
+    </div>
+
+    `
+    div.appendChild(cartdiv)
+  })
+}
+
+document.addEventListener('click',function(event){
+if(event.target.matches("#pls")){
+  const cont=event.target.closest(".container")
+  if(cont){
+    let input=cont.querySelector("#inp")
+    let value=parseInt(input.value)
+    value+=1;
+    input.value=value;
   }
-  
-  // Render the cart
-  function renderCart() {
-    // Clear previous cart content
-    cartItems.innerHTML = "";
-  
-    // Render the new cart items
-    let total = 0;
-    cart.forEach(item => {
-      const cartItem = document.createElement("li");
-      cartItem.className = "cart-item";
-      cartItem.innerHTML = `
-        ${item.name} x ${item.quantity} - $${item.price * item.quantity}
-        <button onclick="removeFromCart(${item.id})">Remove</button>
-      `;
-      cartItems.appendChild(cartItem);
-      total += item.price * item.quantity;
-    });
-  
-    totalAmount.textContent = `Total: $${total}`;
+}
+else if(event.target.matches("#min")){
+const cont=event.target.closest(".container");
+if(cont){
+  let input=cont.querySelector("#inp")
+  let value=parseInt(input.value);
+  if(value>0){
+    value-=1;
   }
-  
-  // Remove item from the cart
-  function removeFromCart(productId) {
-    const productIndex = cart.findIndex(p => p.id === productId);
-    if (productIndex !== -1) {
-      cart.splice(productIndex, 1);
-      renderCart();
-    }
-  }
-  
-  // Initial render
-  renderProducts();
-  
+  input.value=value;
+}
+}
+})
+
+
+
+//update function for cart if logged in 
+function func2(elem){
+const container=elem.closest(".container");
+const inputvalue=container.querySelector("#inp");
+const container_father=elem.closest(".container-father")
+const name=container_father.querySelector("h1#name")
+console.log(name)
+console.log(inputvalue.value)
+fetch("/cartupdate",{
+  method:"PATCH",
+  headers:{
+    'Content-Type':"application/json"
+  },
+  body:JSON.stringify({
+    qty:inputvalue.value,
+    name:name.textContent,
+
+  })
+})
+.then(response=>JSON.parse(response))
+.then(data=>alert("updated"))
+
+
+}
+
+//function to delete item
+function deleteItem(elem){
+const container_father=elem.closest(".container-father")
+const name=container_father.querySelector("h1#name")
+fetch("/deleteItem",{
+  method:"DELETE",
+  headers:{"Content-type":"application/json"},
+  body:JSON.stringify({
+    name:name.textContent
+  })
+})
+
+}
+
