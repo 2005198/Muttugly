@@ -1,4 +1,5 @@
 Muttugly
+
 Pet Grooming Shop
 System Overview
 Muttugly is a pet grooming shop that allows customers to buy products and get appointments for services and will be able to post their ratings and reviews. The system being developed is a simple e-commerce platform prototype for customers that allows them to register, log in, add products to a shopping cart, and change or delete those items, and in the future, customers will be able to get appointments and give ratings and reviews.
