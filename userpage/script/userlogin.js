@@ -10,6 +10,12 @@ async function Func1(){
         },
         body:JSON.stringify({Email:emailId,password})
     }
-).then(window.location.href="/index.html")
+).then(response=>{
+    if(response.status==200){window.location.href="/index.html"}
+    else{
+        alert("NOT REGISTERED USER")
+        window.location.href="/userRegistration.html";
+    }
+})
 .catch(err=>console.log(err))
 }

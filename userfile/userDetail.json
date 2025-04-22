@@ -1,7 +1,20 @@
 [
   {
-    "Email": "mukarram063@gmail.com",
-    "password": "12345",
-    "cart": []
+    "Email": "user123@gmail.com",
+    "password": "blabla",
+    "cart": [
+      {
+        "id": 2,
+        "name": "Dog leesh",
+        "price": "$50",
+        "qty": "3"
+      },
+      {
+        "id": 3,
+        "name": "TOY_2",
+        "price": "$30",
+        "qty": "9"
+      }
+    ]
   }
 ]

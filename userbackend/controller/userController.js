@@ -16,8 +16,8 @@ let userdetail=JSON.parse(fs.readFileSync('../userfile/userDetail.json','utf-8',
     console.log(req.body);
     const {Email,password}=req.body;
     if(!Email || !password){
-        res.status(402).json({
-            status:402,
+     return   res.status(402).json({
+           
             body:{
                 "content":"error with email or password"
             }

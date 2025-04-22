@@ -26,19 +26,26 @@ async function getitem(){
   let cart=await response.json('cart');
   cart=cart['cart']
   const div=document.getElementById("cart_items");
+  const divtotal=document.getElementById("cartTotal");
   div.innerHTML="";
+  let total=0;
   cart.forEach(element => {
+    total+=(parseInt(element.price.split("$")[1])*parseInt(element.qty))
+    console.log(element.price)
     cartdiv=document.createElement('div')
     cartdiv.innerHTML=`<div class="container-father" style="display:inline;">
     <h1 id="name" class="name" style="display:inline;">${element.name}</h1>
-    <h2 style="display:inline;margin-left:10px;color:red">QTY: ${element.qty}</h2><div style="margin-left:10px;display:inline" class="container"><button id="pls">+</button><input id="inp" type="text" value="${element.qty}"style="text-align:center;max-width:25px"><button id="min">-</button> <button onclick="func2(this)">UPDATE</button></div>
-    <h2 style="display:inline;margin-left:15px;color:red"> PRICE : ${element.price}</h2>
+    <h2 style="display:inline;margin-left:20px;color:red">QTY: ${element.qty}</h2><div style="margin-left:10px;display:inline" class="container"><button id="pls">+</button><input id="inp" type="text" value="${element.qty}"style="text-align:center;max-width:25px"><button id="min">-</button> <button onclick="func2(this)">UPDATE</button></div>
+    <h2 style="display:inline;margin-left:20px;color:red"> PRICE : ${element.price}</h2>
     <div style="display:inline;"><button style="background-color:red" onclick="deleteItem(this)">DELETE X</button></div>
     </div>
 
     `
     div.appendChild(cartdiv)
   })
+  console.log(total)
+  divtotal.innerText="TOTAL: "+total;
+
 }
 
 document.addEventListener('click',function(event){
@@ -85,8 +92,10 @@ fetch("/cartupdate",{
 
   })
 })
-.then(response=>JSON.parse(response))
-.then(data=>alert("updated"))
+.then(response=>{
+  if(response.status==200){
+  alert("updated")
+getitem()}})
 
 
 }
@@ -100,6 +109,10 @@ fetch("/deleteItem",{
   headers:{"Content-type":"application/json"},
   body:JSON.stringify({
     name:name.textContent
+  }).then(response=>{
+    if(response.status(200)){
+      getitem();
+    }
   })
 })
 
