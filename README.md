@@ -1,5 +1,12 @@
 Muttugly
 
+
+Attributions :
+1)W3School : used for css concepts such as flex and html references for form elements 
+2)NodeJs Documentations: for references regarding filesystem, HTTP and Async/promise based api
+3)Youtube: watched express Js video for basic understanding needed "https://www.youtube.com/watch?v=SccSCuHhOw0&ab_channel=WebDevSimplified"
+4)ChatGpt : used chatgpt for corrections and as AI helper to resolve query for filesystem
+
 Pet Grooming Shop
 System Overview
 Muttugly is a pet grooming shop that allows customers to buy products and get appointments for services and will be able to post their ratings and reviews. The system being developed is a simple e-commerce platform prototype for customers that allows them to register, log in, add products to a shopping cart, and change or delete those items, and in the future, customers will be able to get appointments and give ratings and reviews.
