@@ -2,10 +2,20 @@ Muttugly
 
 
 Attributions :
-1)W3School : used for css concepts such as flex and html references for form elements 
-2)NodeJs Documentations: for references regarding filesystem, HTTP and Async/promise based api
-3)Youtube: watched express Js video for basic understanding needed "https://www.youtube.com/watch?v=SccSCuHhOw0&ab_channel=WebDevSimplified"
-4)ChatGpt : used chatgpt for corrections and as AI helper to resolve query for filesystem
+1) I used W3Schools as a reference for HTML and CSS. I used their documentation to learn layout approaches like Flexbox, as well as to search up syntax and examples for various HTML form elements like input fields, buttons, and labels which helped me to structure the project's front-end.
+
+2) I used the Node.js documentation to understand and build server-side functionalities which references to working with the filesystem (fs module), managing HTTP requests, and leveraging asynchronous APIs such as Promises and async/await patterns.
+   
+3) I followed Web Dev Simplified's Express.js lesson ("What is Express.js? | Node.js Framework Crash Course") to understand the basics of Express, including routing, middleware, request handling, and server configuration. This video helped me better structure my Express application.
+"https://www.youtube.com/watch?v=SccSCuHhOw0&ab_channel=WebDevSimplified"
+
+4) I used ChatGPT as an AI assistant, primarily for clarification and troubleshooting. I've used it to:
+
+Fix syntax errors and enhance code readability.
+Understand the error messages.
+Get assistance with filesystem-related inquiries.
+Validate my approach to certain features before implementation.
+
 
 Pet Grooming Shop
 System Overview
