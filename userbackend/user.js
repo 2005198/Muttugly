@@ -1,88 +1,112 @@
 import express from 'express';
 import path from 'node:path';
-import {writeUser,checkuser,authorzie} from "./controller/userController.js"
-import { error } from 'node:console';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser'
-import * as fs from 'node:fs';
-import { checklogin,getitem,updatecart,deletecart} from './controller/cartcontroller.js';
+import Database from 'better-sqlite3';
+import jwt from 'jsonwebtoken';
 
-const app =express();
+const app = express();
 app.use(bodyParser.json());
-const PORT=3000;
 app.use(cookieParser());
-
 app.use(express.static('../userpage'))
 
-let userdetail=JSON.parse(fs.readFileSync('../userfile/userDetail.json','utf-8'));
+const db = new Database('../userfile/muttugly.db');
+const SECRET = "kadkfasdnjsdfsabfsMUKKARAMkjlkjlk"
 
+db.exec(`
+    CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        email TEXT UNIQUE,
+        password TEXT
+    )
+`);
 
+db.exec(`
+    CREATE TABLE IF NOT EXISTS cart (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_email TEXT,
+        item_id INTEGER,
+        name TEXT,
+        price TEXT,
+        qty INTEGER
+    )
+`);
 
-app.get("/getitems",checklogin,getitem);
-app.patch("/cartupdate",checklogin,updatecart)
-app.delete("/deleteItem",checklogin,deletecart)
-app.post('/user',writeUser);
-app.post('/checkuser',checkuser)
-app.post('/post', authorzie, async (req, res) => {
+app.post('/user', (req, res) => {
+    const { Email, password } = req.body;
+    if (!Email || !password) {
+        return res.status(402).json({ message: "error with email or password" })
+    }
+    try {
+        db.prepare("INSERT INTO users (email, password) VALUES (?, ?)").run(Email, password);
+        res.status(200).json({ message: "user created successfully" })
+    } catch (err) {
+        res.status(400).json({ message: "user already exists" })
+    }
+});
+
+app.post('/checkuser', (req, res) => {
+    const { Email, password } = req.body;
+    const user = db.prepare("SELECT * FROM users WHERE email = ?").get(Email);
+    if (user) {
+        const token = jwt.sign({ UserEmail: user.email }, SECRET, { expiresIn: "2h" });
+        res.cookie("authorization", token, { maxAge: 360000000 })
+        return res.status(200).json({ message: "login successful", body: { token } })
+    }
+    res.status(400).json({ message: "no user found !!" });
+});
+
+function checklogin(req, res, next) {
+    const cookie = req.cookies.authorization;
+    if (!cookie) {
+        return res.status(400).json("User not Found")
+    }
+    const token = jwt.decode(cookie);
+    const email = token['UserEmail'];
+    req.UserEmail = email;
+    if (email) {
+        next();
+    } else {
+        res.status(402).json({ message: "login first!!" })
+    }
+}
+
+app.post('/post', checklogin, (req, res) => {
     const { cart_id, cart_name, cart_price, cart_qty } = req.body;
     const userEmail = req.UserEmail;
-    console.log(userEmail)
-    let userdetail=await JSON.parse(fs.readFileSync('../userfile/userDetail.json','utf-8'));
 
-    const user = userdetail.find(u => u.Email === userEmail);
-  
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+    const existing = db.prepare("SELECT * FROM cart WHERE user_email = ? AND item_id = ?").get(userEmail, cart_id);
+
+    if (existing) {
+        db.prepare("UPDATE cart SET qty = qty + 1 WHERE user_email = ? AND item_id = ?").run(userEmail, cart_id);
+        return res.status(200).json({ message: 'Cart item updated' });
     }
-  
-    const cartItem = user.cart.find(item => item.id === cart_id);
-  
-    if (cartItem) {
-      cartItem.qty += 1;
-      fs.writeFile(
-        path.join( '../userfile/userDetail.json'),
-        JSON.stringify(userdetail, null, 2),
-        'utf-8',
-        err => {
-          if (err) {
-            console.error('File write error:', err);
-            return res.status(500).json({ message: 'Failed to save cart item' });
-          }
-            
-        }
-        
-      );
-      return res.status(200).json({ message: 'Cart item updated successfully' });
-      
-    }
-  
-    user.cart.push({
-      id: cart_id,
-      name: cart_name,
-      price: cart_price,
-      qty: cart_qty
-    });
-  
-    fs.writeFile(
-      path.join( '../userfile/userDetail.json'),
-      JSON.stringify(userdetail, null, 2),
-      'utf-8',
-      err => {
-        if (err) {
-          console.error('File write error:', err);
-          return res.status(500).json({ message: 'Failed to save cart item' });
-        }
-        res.status(200).json({ message: 'Cart item saved successfully' });
-      }
-    );
-  });
 
+    db.prepare("INSERT INTO cart (user_email, item_id, name, price, qty) VALUES (?, ?, ?, ?, ?)").run(userEmail, cart_id, cart_name, cart_price, cart_qty);
+    res.status(200).json({ message: 'Cart item saved' });
+});
 
+app.get("/getitems", checklogin, (req, res) => {
+    const email = req.UserEmail;
+    const cart = db.prepare("SELECT * FROM cart WHERE user_email = ?").all(email);
+    return res.status(200).json({ cart })
+});
 
+app.patch("/cartupdate", checklogin, (req, res) => {
+    const { qty, name } = req.body;
+    const email = req.UserEmail;
+    db.prepare("UPDATE cart SET qty = ? WHERE user_email = ? AND name = ?").run(qty, email, name);
+    return res.status(200).json({ message: "updated cart" })
+});
 
-app.listen(PORT,(err)=>{
-    if(err){console.error(err)}
-    else{
-    console.log(`listening at ${PORT}`)
-    }
+app.delete("/deleteItem", checklogin, (req, res) => {
+    const { name } = req.body;
+    const email = req.UserEmail;
+    db.prepare("DELETE FROM cart WHERE user_email = ? AND name = ?").run(email, name.trim());
+    return res.status(200).json({ message: "deleted item" })
+});
+
+app.listen(3000, (err) => {
+    if (err) { console.error(err) }
+    else { console.log(`listening at 3000`) }
 })
