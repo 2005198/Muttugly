@@ -73,6 +73,7 @@
     <a  style="text-decoration: none; margin-left: 20px;" href="/userlogin.html">LOGIN PAGE</a>
     <a style="text-decoration: none; margin-left: 20px;" href="/userRegistration.html">REGISTRATION PAGE</a>
     <a style="text-decoration: none; margin-left: 20px;" href="/cart.html">CART</a>
+    <a style="text-decoration: none; margin-left: 20px;cursor:pointer;color:red" onclick="logout()">LOGOUT</a>
   </div>
   </header>
   
@@ -180,7 +181,15 @@
       .catch(err=>{
         console.error(err)
         alert("login first")})
-      
+
+    }
+
+    function logout(){
+      fetch("/logout",{method:"POST"})
+      .then(()=>{
+        alert("logged out")
+        window.location.href="/userlogin.html"
+      })
     }
   </script>
 </body>

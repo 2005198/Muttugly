@@ -106,6 +106,11 @@ app.delete("/deleteItem", checklogin, (req, res) => {
     return res.status(200).json({ message: "deleted item" })
 });
 
+app.post("/logout", (req, res) => {
+    res.clearCookie("authorization");
+    return res.status(200).json({ message: "logged out" })
+});
+
 app.listen(3000, (err) => {
     if (err) { console.error(err) }
     else { console.log(`listening at 3000`) }
