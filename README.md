@@ -16,7 +16,7 @@ Understand the error messages.
 Get assistance with filesystem-related inquiries.
 Validate my approach to certain features before implementation.
 
-5) A friend helped me replace JSON file storage with SQLite database using the better-sqlite3 library. They also suggested adding a logout button feature which I implemented with their guidance. They showed me how to use the better-sqlite3 documentation to understand database queries.
+5) A friend helped me replace JSON file storage with SQLite database using the better-sqlite3 library. They also suggested adding a logout button feature which I implemented with their guidance. They showed me how to use the better-sqlite3 documentation to understand database queries. They also helped me fix the login to check password properly.
 
 
 Pet Grooming Shop

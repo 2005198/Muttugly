@@ -47,13 +47,13 @@ app.post('/user', (req, res) => {
 
 app.post('/checkuser', (req, res) => {
     const { Email, password } = req.body;
-    const user = db.prepare("SELECT * FROM users WHERE email = ?").get(Email);
+    const user = db.prepare("SELECT * FROM users WHERE email = ? AND password = ?").get(Email, password);
     if (user) {
         const token = jwt.sign({ UserEmail: user.email }, SECRET, { expiresIn: "2h" });
         res.cookie("authorization", token, { maxAge: 360000000 })
         return res.status(200).json({ message: "login successful", body: { token } })
     }
-    res.status(400).json({ message: "no user found !!" });
+    res.status(400).json({ message: "wrong email or password !!" });
 });
 
 function checklogin(req, res, next) {
