@@ -16,6 +16,8 @@ Understand the error messages.
 Get assistance with filesystem-related inquiries.
 Validate my approach to certain features before implementation.
 
+5) A friend helped me replace JSON file storage with SQLite database using the better-sqlite3 library. They also suggested adding a logout button feature which I implemented with their guidance. They showed me how to use the better-sqlite3 documentation to understand database queries.
+
 
 Pet Grooming Shop
 System Overview
@@ -26,7 +28,7 @@ Functional Requirements
 User Registration and Login
 Allow users to create accounts.
 Authenticate users and let them log in.
-To ensure permanence, save user data in a .json file.
+To ensure permanence, save user data in a SQLite database.
 Cart Management
 Create a cart object when a user registers.
 Allow users to add items to their carts.
@@ -36,7 +38,7 @@ Remove things from the cart.
 
 Non-functional Requirements
 
-Store data in a .json file.
+Store data in a SQLite database.
 Use the JavaScript Fetch API for frontend-backend communication.
 Code should be readable, usable, and modular.
 System Architecture
@@ -48,7 +50,7 @@ Login form—login.html
 Button (Add to Cart)—index.html
 Backend
 Environment: Node.js
-File System-Based Database: Data saved in .json files.
+Database: SQLite using better-sqlite3 library.
 API:
 Expose REST endpoints for:
 
@@ -67,23 +69,23 @@ CRUD Operations
 Create
 Registration
 Name, email address, and password are all input boxes.
-Backend adds the new user to users. JSON.
-Also creates an empty cart in carts. JSON for the user.
+Backend adds the new user to the users table in SQLite.
+Cart is stored in a separate cart table in the database.
 Add to Cart
 When you click "Add to Cart" on a purchase, it sends a POST request.
 Backend inserts the product with default quantity 1 into the user's cart array.
 Read
 User Login
-Input is checked against previously saved users. Json
+Input is checked against users in the SQLite database.
 View Cart
-GET /cart/:userId fetches the cart JSON.
+GET /getitems fetches the cart from SQLite.
 The cart page dynamically renders all products using JavaScript.
 Update
 Input field allows you to change the quantity.
-Sends a PUT request to update the cart JSON file.
+Sends a PATCH request to update the cart in SQLite.
 Delete
 A delete button beside each item initiates a DELETE request.
-Backend removes a product from the cart array. JSON.
+Backend removes a product from the cart table in SQLite.
 
 Validation, Integrity, and Testing
 Validation
@@ -97,7 +99,7 @@ Unit Test
 CRUD actions in isolation, such as addToCart() and removeItem().
 Integration Test
 Simulate complete flow. Register, log in, add an item, update the quantity, and delete it.
-Make sure the UI refreshes dynamically and JSON reflects changes.
+Make sure the UI refreshes dynamically and database reflects changes.
 
 Future Goals
 
