@@ -2,21 +2,43 @@ Muttugly
 
 
 Attributions :
-1) I used W3Schools as a reference for HTML and CSS. I used their documentation to learn layout approaches like Flexbox, as well as to search up syntax and examples for various HTML form elements like input fields, buttons, and labels which helped me to structure the project's front-end.
 
-2) I used the Node.js documentation to understand and build server-side functionalities which references to working with the filesystem (fs module), managing HTTP requests, and leveraging asynchronous APIs such as Promises and async/await patterns.
-   
-3) I followed Web Dev Simplified's Express.js lesson ("What is Express.js? | Node.js Framework Crash Course") to understand the basics of Express, including routing, middleware, request handling, and server configuration. This video helped me better structure my Express application.
-"https://www.youtube.com/watch?v=SccSCuHhOw0&ab_channel=WebDevSimplified"
+1) W3Schools - HTML/CSS Reference
+I used W3Schools for HTML and CSS basics like Flexbox layout and form elements (input fields, buttons, labels).
+Reference: https://www.w3schools.com/
 
-4) I used ChatGPT as an AI assistant, primarily for clarification and troubleshooting. I've used it to:
+2) Node.js Documentation
+Used for understanding async/await patterns and how Node.js handles HTTP requests.
+Reference: https://nodejs.org/docs/
 
-Fix syntax errors and enhance code readability.
-Understand the error messages.
-Get assistance with filesystem-related inquiries.
-Validate my approach to certain features before implementation.
+3) Web Dev Simplified - Express.js Tutorial
+Followed this video to learn Express routing and how app.get(), app.post() work.
+Reference: https://www.youtube.com/watch?v=SccSCuHhOw0
 
-5) A friend helped me replace JSON file storage with SQLite database using the better-sqlite3 library. They also suggested adding a logout button feature which I implemented with their guidance. They showed me how to use the better-sqlite3 documentation to understand database queries. They also helped me fix the login to check password properly.
+4) Express.js Middleware Documentation
+Learned how middleware works and why next() function is needed to pass control to next middleware. Used this for my checklogin function in user.js (line 59-72).
+Reference: https://expressjs.com/en/guide/writing-middleware.html
+
+5) jsonwebtoken npm Documentation
+Used jwt.sign() to create tokens on login (user.js line 52) and jwt.decode() to read token in middleware (user.js line 64). Learned about expiresIn option for token expiry.
+Reference: https://www.npmjs.com/package/jsonwebtoken
+
+6) better-sqlite3 Documentation
+Friend showed me this library. Used db.prepare().run() for INSERT/UPDATE/DELETE and db.prepare().get() for SELECT single row, db.prepare().all() for multiple rows. See user.js lines 41, 50, 78, 85, 91, 98, 105.
+Reference: https://github.com/WiseLibs/better-sqlite3/blob/master/docs/api.md
+
+7) cookie-parser npm
+Used for reading cookies from request. res.cookie() to set and res.clearCookie() for logout.
+Reference: https://www.npmjs.com/package/cookie-parser
+
+8) ChatGPT
+Used for fixing syntax errors, understanding error messages, and validating my approach.
+
+9) Friend's Help
+A friend helped me with:
+- Replacing JSON file storage with SQLite database
+- Suggesting logout button feature (user.js line 109-112)
+- Fixing login to check password properly (user.js line 50)
 
 
 Pet Grooming Shop
